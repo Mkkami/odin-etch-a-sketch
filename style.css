@@ -33,7 +33,7 @@ button {
 }
 
 .cell {
-    border: 1px solid gray;
+    /* border: 1px solid gray; */
     box-sizing: border-box;
     -webkit-user-drag: none;
 }
