@@ -4,6 +4,7 @@ const eraseButton = document.querySelector('#erase');
 const grid = document.querySelector('.grid');
 const inputSize = document.querySelector('#size');
 const RandomButton = document.querySelector('#random');
+const darkenButton = document.querySelector('#darken')
 
 const gridSizePx = Number(getComputedStyle(grid).height.replace('px',''));
 
@@ -14,6 +15,7 @@ let cellSizePx = gridSizePx/16;
 inputSize.value = size;
 
 let randomColor = false;
+let darken = false;
 
 createGrid();
 
@@ -23,13 +25,20 @@ function createGrid() {
             let cell = document.createElement("div");
             cell.className = 'cell';
             cell.setAttribute('style', `width:${cellSizePx}px; height:${cellSizePx}px`);
-            
+            cell.style.filter = 'brightness(1)';
+            cell.style.backgroundColor = 'white';
             cell.addEventListener('mouseover', (e) => {
-                e.target.style.backgroundColor = color;
-                if (randomColor) {
-                    randomRGB();
+                if (darken) {
+                    darkenCell(e);
+                } else {
+                    cell.style.filter = 'brightness(1)';
+                    e.target.style.backgroundColor = color;
+                    if (randomColor) {
+                        randomRGB();
+                    }
                 }
-            })
+            });
+            
             grid.appendChild(cell);
         }
     }
@@ -38,11 +47,13 @@ function createGrid() {
 eraseButton.addEventListener('click', () => {
     color = 'white';
     randomColor = false;
+    darken = false;
 })
 
 colorButton.addEventListener('click', () => {
     color = 'black';
     randomColor = false;
+    darken = false;
 })
 
 clearButton.addEventListener('click', () => {
@@ -50,6 +61,7 @@ clearButton.addEventListener('click', () => {
     // console.log(cells);
     for (let c of cells) {
         c.style.backgroundColor = 'white';
+        c.style.filter = 'brightness(1)';
     }
 })
 
@@ -59,9 +71,15 @@ inputSize.addEventListener('keydown', (e) => {
     }
 });
 
+darkenButton.addEventListener('click', () => {
+    darken = true;
+    randomColor = false;
+})
+
 RandomButton.addEventListener('click', () => {
     randomRGB();
     randomColor = true;
+    darken = false;
 })
 
 function parseInput(e) {
@@ -88,4 +106,12 @@ function randomRGB() {
         rgb.push(Math.floor( Math.random() * (MAX_RGB+1) ));
     }
     color = `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`
+}
+
+function darkenCell(e) {
+    let filter = e.target.style.filter;
+    let brightness = filter.split('(')[1];
+    brightness = brightness.split(')')[0];
+    brightness = Number(brightness);
+    e.target.style.filter = `brightness(${brightness > 0 ? brightness-0.1 : 0})`;
 }
