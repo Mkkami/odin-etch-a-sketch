@@ -4,8 +4,9 @@ const eraseButton = document.querySelector('#erase');
 const grid = document.querySelector('.grid');
 const inputSize = document.querySelector('#size');
 const RandomButton = document.querySelector('#random');
-const darkenButton = document.querySelector('#darken')
-const colorInput = document.querySelector("#color")
+const darkenButton = document.querySelector('#darken');
+const colorInput = document.querySelector("#color");
+const inputSizeRange = document.querySelector("#size-range");
 
 const gridSizePx = Number(getComputedStyle(grid).height.replace('px',''));
 
@@ -14,6 +15,7 @@ let color = 'black';
 let size = 16;
 let cellSizePx = gridSizePx/16;
 inputSize.value = size;
+inputSizeRange.value = size;
 
 let randomColor = false;
 let darken = false;
@@ -59,7 +61,6 @@ colorButton.addEventListener('click', () => {
 
 clearButton.addEventListener('click', () => {
     let cells = [...document.getElementsByClassName('cell')];
-    // console.log(cells);
     for (let c of cells) {
         c.style.backgroundColor = 'white';
         c.style.filter = 'brightness(1)';
@@ -68,7 +69,8 @@ clearButton.addEventListener('click', () => {
 
 inputSize.addEventListener('keydown', (e) => {
     if (e.key === "Enter") {
-        parseInput(e);
+        parseInput();
+        inputSizeRange.value = inputSize.value;
     }
 });
 
@@ -87,12 +89,18 @@ colorInput.addEventListener('change', () => {
     darken=false;
     randomColor=false;
     color = colorInput.value;
-    console.log(color);
 })
 
-function parseInput(e) {
-    size = e.target.value;
-    console.log(size);
+inputSizeRange.addEventListener('input', () => {
+    inputSize.value = inputSizeRange.value;
+})
+
+inputSizeRange.addEventListener('change', () => {
+    parseInput();
+})
+
+function parseInput() {
+    size = inputSize.value;
     if (size > 100) {
         size = 100;
         e.target.value = size;

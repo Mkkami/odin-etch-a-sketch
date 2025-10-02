@@ -38,7 +38,7 @@ button {
     -webkit-user-drag: none;
 }
 
-input#color {
+input {
     display: block;
     margin: 0 auto 1em;
 }
