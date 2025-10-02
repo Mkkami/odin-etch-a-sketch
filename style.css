@@ -37,3 +37,8 @@ button {
     box-sizing: border-box;
     -webkit-user-drag: none;
 }
+
+input#color {
+    display: block;
+    margin: 0 auto 1em;
+}

@@ -1,10 +1,11 @@
-const colorButton = document.querySelector('#color');
+const colorButton = document.querySelector('#color-enable');
 const clearButton = document.querySelector('#clear');
 const eraseButton = document.querySelector('#erase');
 const grid = document.querySelector('.grid');
 const inputSize = document.querySelector('#size');
 const RandomButton = document.querySelector('#random');
 const darkenButton = document.querySelector('#darken')
+const colorInput = document.querySelector("#color")
 
 const gridSizePx = Number(getComputedStyle(grid).height.replace('px',''));
 
@@ -80,6 +81,13 @@ RandomButton.addEventListener('click', () => {
     randomRGB();
     randomColor = true;
     darken = false;
+})
+
+colorInput.addEventListener('change', () => {
+    darken=false;
+    randomColor=false;
+    color = colorInput.value;
+    console.log(color);
 })
 
 function parseInput(e) {
